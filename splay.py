@@ -42,13 +42,55 @@ class SplayTree():
             dict_repr = _to_dict(self.root)
         return json.dumps(dict_repr,indent = 2)
 
+
+    def searchhelp(self,key:int):
+        curr = self.root
+        while((curr.key != key)):
+            if(curr.key < key):
+                if(curr.rightchild != None):
+                    curr = curr.rightchild
+                else:
+                    return curr
+            else:
+                if(curr.leftchild != None):
+                    curr = curr.leftchild
+                else:
+                    return curr
     # Search
     def search(self,key:int):
-        print('This is a place-holder')
+        splaykey = self.searchhelp(key)
+        if(splaykey.parent == None):
+            print("this is the root")
+        elif(splaykey.parent.parent == None):
+            print("this is a child of the root")
+            if(splaykey == splaykey.parent.rightchild):
+                print("this is a zig right")
+            else:
+                print("this is a zig left")
+        elif(splaykey.parent == splaykey.parent.parent.rightchild):
+            if(splaykey == splaykey.parent.rightchild):
+                print("this is a zig zig for the right")
+            else:
+                print("this is a zig zag -right to left")
+        elif(splaykey.parent == splaykey.parent.parent.leftchild):
+            if(splaykey == splaykey.parent.leftchild):
+                print("this is a zig zig for left")
+            else:
+                print("this is zig zag - left to right")
 
     # Insert Method 1
     def insert(self,key:int):
-        print('This is a place-holder')
+        self = self.search(key)
+        if(self.root < key):
+            curr = self.root
+            curr.parent = Node(key=key,leftchild=curr,rightchild=curr.rightchild, parent= None)
+            self.root = curr.parent
+            curr.rightchild.parent = self.root
+        else:
+            curr = self.root
+            curr.parent = Node(key=key,leftchild=curr.leftchild,rightchild=curr, parent= None)
+            self.root = curr.parent
+            curr.leftchild.parent = self.root
 
     # Delete Method 1
     def delete(self,key:int):
