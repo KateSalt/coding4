@@ -94,4 +94,18 @@ class SplayTree():
 
     # Delete Method 1
     def delete(self,key:int):
+        splaykey = self.search(key)
+        if((splaykey.leftchild == None) & (splaykey.rightchild == None)):
+            return None
+        elif(splaykey.rightchild == None):
+            return splaykey.leftchild
+        elif(splaykey.leftchild == None):
+            return splaykey.rightchild
+        else:
+            replacement = splaykey.rightchild.search(key)
+            replacement.rightchild = splaykey.rightchild
+            replacement.leftchild = splaykey.leftchild
+            splaykey.rightchild.parent = replacement
+            splaykey.leftchild.parent = replacement
+            self.root = replacement 
         print('This is a place-holder')
