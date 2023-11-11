@@ -69,6 +69,7 @@ class SplayTree():
                 if(splaykey == splaykey.parent.rightchild):
                     self.root = splaykey
                     splaykey.parent.rightchild = splaykey.leftchild
+                    splaykey.leftchild.parent = splaykey.parent
                     splaykey.leftchild = splaykey.parent
                     splaykey.parent.parent = splaykey 
                     splaykey.parent = None
@@ -176,9 +177,13 @@ class SplayTree():
         if((splaykey.leftchild == None) & (splaykey.rightchild == None)):
             return None
         elif(splaykey.rightchild == None):
-            return splaykey.leftchild
+            self.root = splaykey.leftchild
+            self.root.parent = None
+            return self
         elif(splaykey.leftchild == None):
-            return splaykey.rightchild
+            self.root = splaykey.rightchild
+            self.root.parent = None
+            return self
         else:
             repl = SplayTree(root =Node(splaykey.rightchild.key,leftchild=splaykey.rightchild.leftchild,rightchild=splaykey.rightchild.rightchild,parent=None))
             repl = repl.search(key)
@@ -194,12 +199,12 @@ class SplayTree():
 
 # tree = SplayTree(root=None)
 
-# tree.insert(21)
-# tree.insert(38)
-# tree.insert(32)
-# tree.insert(42)
-# tree.delete(32)
-# # tree.insert(13)
-# ####
-# print("________")
+# tree.insert(36)
+# tree.insert(37)
+# tree.insert(39)
+# tree.search(36)
+# tree.delete(36)
+# # # tree.insert(13)
+# # ####
+# # print("________")
 # print(tree.dump())
