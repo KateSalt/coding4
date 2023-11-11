@@ -56,10 +56,10 @@ class SplayTree():
                     curr = curr.leftchild
                 else:
                     return curr
+        return curr
     # Search add until root
     def search(self,key:int):
         if(self.root == None):
-            
             return self
         splaykey = self.searchhelp(key)
         if(splaykey.parent == None):
@@ -75,7 +75,7 @@ class SplayTree():
                     return self
                 else:
                     self.root = splaykey
-                    splaykey.parent.leftchild = splaykey.leftchild
+                    splaykey.parent.leftchild = splaykey.rightchild
                     splaykey.rightchild = splaykey.parent
                     splaykey.parent.parent = splaykey 
                     splaykey.parent = None
@@ -171,7 +171,8 @@ class SplayTree():
 
     # Delete Method 1
     def delete(self,key:int):
-        splaykey = self.search(key)
+        splay = self.search(key)
+        splaykey  = splay.root
         if((splaykey.leftchild == None) & (splaykey.rightchild == None)):
             return None
         elif(splaykey.rightchild == None):
@@ -179,13 +180,26 @@ class SplayTree():
         elif(splaykey.leftchild == None):
             return splaykey.rightchild
         else:
-            replacement = splaykey.rightchild.search(key)
-            replacement.rightchild = splaykey.rightchild
+            repl = SplayTree(root =Node(splaykey.rightchild.key,leftchild=splaykey.rightchild.leftchild,rightchild=splaykey.rightchild.rightchild,parent=None))
+            repl = repl.search(key)
+            replacement = repl.root
             replacement.leftchild = splaykey.leftchild
-            splaykey.rightchild.parent = replacement
-            splaykey.leftchild.parent = replacement
+            if(splaykey.rightchild != None):
+                splaykey.rightchild.parent = replacement
+            if(splaykey.leftchild != None):
+                splaykey.leftchild.parent = replacement
             self.root = replacement 
-            return replacement
+            return self.root
         
 
+# tree = SplayTree(root=None)
 
+# tree.insert(21)
+# tree.insert(38)
+# tree.insert(32)
+# tree.insert(42)
+# tree.delete(32)
+# # tree.insert(13)
+# ####
+# print("________")
+# print(tree.dump())
