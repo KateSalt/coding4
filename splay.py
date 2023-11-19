@@ -133,37 +133,40 @@ class SplayTree():
                     splaykey.rightchild = parent
                     splaykey.parent = grand.parent 
                     grand.parent = splaykey
+                    if(splaykey.parent == None):
+                        self.root = splaykey
 
             elif(splaykey.parent == splaykey.parent.parent.leftchild):
+
                 if(splaykey == splaykey.parent.leftchild):
                     grand = splaykey.parent.parent
                     parent = splaykey.parent
                     if(grand == self.root):
                         self.root = splaykey
                     grand.leftchild = parent.rightchild
+                    
                     if(grand.leftchild != None):
                         grand.leftchild.parent = grand
+
+                    
                     parent.rightchild = grand
                     splaykey.parent = grand.parent 
                     if(grand.parent != None):
                         if(grand.parent.leftchild == grand):
                             grand.parent.leftchild = splaykey
+  
                         else:
                             grand.parent.rightchild = splaykey
+   
                     grand.parent = parent 
                     parent.parent = splaykey
                     if(splaykey.rightchild != None):
                         splaykey.rightchild.parent = parent
+
                     parent.leftchild = splaykey.rightchild
                     splaykey.rightchild = parent
-                    # if(key == 777):
-                    #     # print("woohoo!")
-                    #     # print("GRAND " , grand.key, grand.leftchild, grand.rightchild, grand.parent.key)
-                    #     # print("PARENT " , parent.key, parent.leftchild, parent.rightchild.key, parent.parent.key)
-                    #     # print("SPLAY " , splaykey.key, splaykey.leftchild,splaykey.rightchild.key, splaykey.parent.rightchild.key)
-                    #     # print(grand.key, grand.leftchild.parent.key, splaykey.key, " penis")
-                    #     # print(self.dump())
-                    #     return
+                    if(splaykey.parent == None):
+                        self.root = splaykey
                 else:
                     grand = splaykey.parent.parent
                     parent = splaykey.parent
@@ -214,8 +217,8 @@ class SplayTree():
 
     # Delete Method 1
     def delete(self,key:int):
-        splay = self.search(key)
-        splaykey  = splay.root
+        self = self.search(key)
+        splaykey  = self.root
         if((splaykey.leftchild == None) & (splaykey.rightchild == None)):
             return None
         elif(splaykey.rightchild == None):
@@ -228,15 +231,22 @@ class SplayTree():
             return self
         else:
             repl = SplayTree(root =Node(splaykey.rightchild.key,leftchild=splaykey.rightchild.leftchild,rightchild=splaykey.rightchild.rightchild,parent=None))
+            if(repl.root.rightchild != None):
+                repl.root.rightchild.parent.parent = None 
+            if(repl.root.leftchild != None):
+                repl.root.leftchild.parent.parent = None
             repl = repl.search(key)
             replacement = repl.root
-            replacement.leftchild = splaykey.leftchild
-            if(splaykey.rightchild != None):
-                splaykey.rightchild.parent = replacement
             if(splaykey.leftchild != None):
-                splaykey.leftchild.parent = replacement
+                replacement.leftchild = splaykey.leftchild
+
+                replacement.leftchild.parent = replacement
+
+            if(splaykey.rightchild != None):
+                replacement.rightchild.parent = replacement
             self.root = replacement 
-            return self.root
+
+            return self
         
 
 # tree = SplayTree(root=None)
