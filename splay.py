@@ -242,7 +242,7 @@ class SplayTree():
 
                 replacement.leftchild.parent = replacement
 
-            if(splaykey.rightchild != None):
+            if(replacement.rightchild != None):
                 replacement.rightchild.parent = replacement
             self.root = replacement 
 
